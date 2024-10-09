@@ -37,3 +37,9 @@ MonoBehaviour:
   - robotName: WildStang
     robotImage: {fileID: 21300000, guid: a550363cc52459b4aae02b36fbe892a6, type: 3}
     robotNumber: 111
+  - robotName: Flying Toasters
+    robotImage: {fileID: 21300000, guid: a550363cc52459b4aae02b36fbe892a6, type: 3}
+    robotNumber: 3641
+  - robotName: High Tide
+    robotImage: {fileID: 21300000, guid: a550363cc52459b4aae02b36fbe892a6, type: 3}
+    robotNumber: 4414
