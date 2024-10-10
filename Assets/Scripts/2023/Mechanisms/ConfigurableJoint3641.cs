@@ -237,15 +237,15 @@ namespace Mechanisms
         private IEnumerator extendTo(float armAngle, float elevatorDistance, bool wrist)
         {
 
-            if(armAngle > 160)
-            {
-                armTargetAngle = 160;
-                yield return new WaitForSeconds(0.2f);
+            //if(armAngle > 160)
+            //{
+            //    armTargetAngle = 160;
+            //    yield return new WaitForSeconds(0.2f);
+            //    armTargetAngle = armAngle;
+            //} else
+            //{
                 armTargetAngle = armAngle;
-            } else
-            {
-                armTargetAngle = armAngle;
-            }
+            //}
 
             //while (Mathf.Abs(getActualAngle(pivotRB.localEulerAngles.z) - armTargetAngle) > 10f)
             //{
@@ -255,6 +255,7 @@ namespace Mechanisms
 
             elevatorTargetDistance = elevatorDistance;
             wristExtended = wrist;
+            yield return null;
         }
 
         private IEnumerator retractFrom(float armAngle, float elevatorDistance, bool wrist)
@@ -263,18 +264,20 @@ namespace Mechanisms
             elevatorTargetDistance = elevatorDistance;
             wristExtended = wrist;
 
-            yield return new WaitForSeconds(0.2f);
+            //yield return new WaitForSeconds(0.2f);
 
-            if (armAngle < 90 && pivotRB.localRotation.eulerAngles.z > 90)
-            {
-                armTargetAngle = 80;
-                yield return new WaitForSeconds(0.2f);
+            //if (armAngle < 90 && pivotRB.localRotation.eulerAngles.z > 90)
+            //{
+            //    armTargetAngle = 80;
+            //    yield return new WaitForSeconds(0.2f);
+            //    armTargetAngle = armAngle;
+            //}
+            //else
+            //{
                 armTargetAngle = armAngle;
-            }
-            else
-            {
-                armTargetAngle = armAngle;
-            }
+            //}
+
+            yield return null;
         }
     }
 }
