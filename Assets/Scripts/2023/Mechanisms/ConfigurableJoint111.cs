@@ -81,6 +81,8 @@ namespace Mechanisms
             _lowAction = InputSystem.actions.FindAction("Low");
             _intakeDoubleSubstationAction = InputSystem.actions.FindAction("IntakeDoubleSubstation");
             _intakeGroundAction = InputSystem.actions.FindAction("IntakeGround");
+
+            SubstationGamePieceLoader.spawnTipped = true;
         }
 
         private void Update()
