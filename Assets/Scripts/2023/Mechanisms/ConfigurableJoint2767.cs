@@ -89,7 +89,7 @@ namespace Mechanisms
         {
             if (GameManager.canRobotMove)
             {
-                if (_stowAction.triggered || _intakeGroundAction.WasReleasedThisFrame() || _intakeDoubleSubstationAction.WasReleasedThisFrame())
+                if (_stowAction.triggered || (_intakeGroundAction.WasReleasedThisFrame() && _previousRobotState == RobotState.IntakeGround) || _intakeDoubleSubstationAction.WasReleasedThisFrame())
                 {
                     StartCoroutine(Retract(0, 0, 0));
 
