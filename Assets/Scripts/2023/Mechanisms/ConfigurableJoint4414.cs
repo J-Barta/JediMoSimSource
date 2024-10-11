@@ -90,6 +90,9 @@ namespace Mechanisms
 
             _previousRobotState = RobotState.Stow;
             _currentRobotState = RobotState.Stow;
+
+            //TODO: Bad bandaid fix for tipped cones
+            SubstationGamePieceLoader.spawnTipped = true;
         }
 
         private void Update()
@@ -226,8 +229,8 @@ namespace Mechanisms
 
 
             stage1.targetPosition = new Vector3(0, elevatorTargetDistance/3, 0);
-            stage2.targetPosition = new Vector3(0, elevatorTargetDistance/3, 0);
-            stage3.targetPosition = new Vector3(0, elevatorTargetDistance/3, 0);
+            stage2.targetPosition = new Vector3(0, elevatorTargetDistance/4, 0);
+            stage3.targetPosition = new Vector3(0, 5*elevatorTargetDistance/12, 0);
             pivot.targetRotation = Quaternion.Euler(0, -pivotTargetAngle, 0);
             wrist.targetRotation = Quaternion.Euler(0, wristTargetAngle, 0);
             intake.targetRotation = Quaternion.Euler(0, intakeTargetAngle, 0);

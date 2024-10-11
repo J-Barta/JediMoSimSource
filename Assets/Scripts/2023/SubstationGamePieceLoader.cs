@@ -13,7 +13,8 @@ public class SubstationGamePieceLoader : MonoBehaviour
     [SerializeField] private float spawnDelay;
     [SerializeField] private Collider shelfCollider;
 
-    [SerializeField] private GameObject hiddenCone;
+    [SerializeField] private GameObject uprightCone;
+    [SerializeField] private GameObject tippedCone;
     [SerializeField] private GameObject hiddenCube;
 
     [SerializeField] private bool isCone;
@@ -23,11 +24,12 @@ public class SubstationGamePieceLoader : MonoBehaviour
 
     private bool _canSpawn = true;
     private bool _enabled;
-    // private bool _requestSpawn;
-    
+
+    public static bool spawnTipped = false;
+
     private void Start()
     {
-        hiddenCone.SetActive(false);
+        uprightCone.SetActive(false);
         hiddenCube.SetActive(false);
         _spawnCollider = GetComponent<BoxCollider>();
 
@@ -48,7 +50,13 @@ public class SubstationGamePieceLoader : MonoBehaviour
         // _requestSpawn = false;
         if (isCone)
         {
-            hiddenCone.SetActive(true);
+            if(spawnTipped)
+            {
+                tippedCone.SetActive(true);
+            } else
+            {
+                uprightCone.SetActive(true);
+            }
         }
         else
         {
@@ -61,9 +69,16 @@ public class SubstationGamePieceLoader : MonoBehaviour
     {
         shelfJoint.targetPosition = new Vector3(0, shelfDistance, 0);
         yield return new WaitForSeconds(spawnDelay);
-        _spawnedGameObject = Instantiate(isCone ? cone : cube, spawnLocation.position, spawnLocation.rotation);
-        hiddenCone.SetActive(false);
+        if(spawnTipped && isCone)
+        {
+            _spawnedGameObject = Instantiate(cone, tippedCone.transform.position, tippedCone.transform.rotation);
+        } else
+        {
+            _spawnedGameObject = Instantiate(isCone ? cone : cube, spawnLocation.position, spawnLocation.rotation);
+        }
+        uprightCone.SetActive(false);
         hiddenCube.SetActive(false);
+        tippedCone.SetActive(false);
         while (CheckGamePiece())
         {
             yield return null;
