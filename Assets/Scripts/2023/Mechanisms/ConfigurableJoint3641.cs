@@ -94,13 +94,14 @@ namespace Mechanisms
 
             starting = pivotRB.localRotation.eulerAngles;
 
+
         }
 
         private void Update()
         {
             if (GameManager.canRobotMove)
             {
-                if (_stowAction.triggered || _intakeGroundAction.WasReleasedThisFrame())
+                if (_stowAction.triggered || _intakeGroundAction.WasReleasedThisFrame() || _intakeDoubleSubstationAction.WasReleasedThisFrame())
                 {
                     StopAllCoroutines();
 
@@ -162,8 +163,19 @@ namespace Mechanisms
                 }
                 else if (_intakeDoubleSubstationAction.WasPressedThisFrame())
                 {
+                    if(_gamePieceManager.currentGamePieceMode == GamePieceType.Cube)
+                    {
+                        StopAllCoroutines();
 
-                    _gamePieceManager.shouldSpawnCone = true;
+                        StartCoroutine(extendTo(armSubstationIntakeAngleCube, elevatorSubstationIntakeDistanceCube, wristSubstationCube));
+                    } else
+                    {
+                        StopAllCoroutines();
+
+                        StartCoroutine(extendTo(armSubstationIntakeAngle, elevatorSubstationIntakeDistance, wristSubstation));
+
+                    }
+
 
                     _currentRobotState = RobotState.IntakeDoubleSubstation;
                 }
@@ -212,46 +224,52 @@ namespace Mechanisms
                 }
             }
             
-            armPivot.targetRotation = Quaternion.Euler(armTargetAngle, 0, 0);
+            armPivot.targetRotation = Quaternion.Euler(0,0, armTargetAngle);
             stage1.targetPosition = new Vector3(0, 0, -elevatorTargetDistance / 2);
             stage2.targetPosition = new Vector3(0, 0, -elevatorTargetDistance);
             wrist.targetRotation = Quaternion.Euler(wristExtended ? wristExtendedAngle : wristRetractedAngle, 0, 0);
 
 
+            getActualAngle();
+
 
             _previousRobotState = _currentRobotState;
         }
 
-        private float getActualAngle(float eulerAngleReading)
+        private float getActualAngle()
         {
+            float localReading = pivotRB.localEulerAngles.z;
             //in testing, should be about 55, progressively decreases to zero and then up
-            if(eulerAngleReading <= starting.z)
+            if (localReading <= starting.z)
             {
-                return starting.z - eulerAngleReading;
-            } else
-            {
-                return starting.z + (360 - eulerAngleReading);
+                return starting.z - localReading;
+
             }
+            else
+            {
+                return starting.z + (360 - localReading);
+            }
+
         }
 
         private IEnumerator extendTo(float armAngle, float elevatorDistance, bool wrist)
         {
 
-            //if(armAngle > 160)
-            //{
-            //    armTargetAngle = 160;
-            //    yield return new WaitForSeconds(0.2f);
-            //    armTargetAngle = armAngle;
-            //} else
-            //{
+            if(armAngle > 160 && (getActualAngle() < 160 || getActualAngle() > 250))
+            {
+                armTargetAngle = 160;
+                yield return new WaitForSeconds(0.2f);
                 armTargetAngle = armAngle;
-            //}
+            } else
+            {
+                armTargetAngle = armAngle;
+            }
 
-            //while (Mathf.Abs(getActualAngle(pivotRB.localEulerAngles.z) - armTargetAngle) > 10f)
-            //{
+            while (Mathf.Abs(getActualAngle() - armTargetAngle) > 10f)
+            {
                 
-            //    yield return null;
-            //}
+                yield return null;
+            }
 
             elevatorTargetDistance = elevatorDistance;
             wristExtended = wrist;
@@ -264,18 +282,18 @@ namespace Mechanisms
             elevatorTargetDistance = elevatorDistance;
             wristExtended = wrist;
 
-            //yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.2f);
 
-            //if (armAngle < 90 && pivotRB.localRotation.eulerAngles.z > 90)
-            //{
-            //    armTargetAngle = 80;
-            //    yield return new WaitForSeconds(0.2f);
-            //    armTargetAngle = armAngle;
-            //}
-            //else
-            //{
+            if (armAngle < 90 && getActualAngle() > 90)
+            {
+                armTargetAngle = 80;
+                yield return new WaitForSeconds(0.2f);
                 armTargetAngle = armAngle;
-            //}
+            }
+            else
+            {
+                armTargetAngle = armAngle;
+            }
 
             yield return null;
         }

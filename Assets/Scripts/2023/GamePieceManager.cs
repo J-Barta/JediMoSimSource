@@ -170,16 +170,22 @@ public class GamePieceManager : MonoBehaviour
         if (_spawnGamePiece.triggered)
         {
             //Bandaid fix for now because cube should be the primary mode if the thing is dropped
-            _singleSubstation.gamePieceType = GamePieceType.Cube;
-            _singleSubstation.requestSpawn = true;
+            switch(robotSettings)
+            {
+                case RobotSettings.FlyingToasters:
+                    _singleSubstation.requests.Add(new SingleSubRequest(currentGamePieceMode, DeliverType.NoseFirst));
+                    break;
+                default:
+                    _singleSubstation.requests.Add(new SingleSubRequest(GamePieceType.Cube, DeliverType.Toss));
+                    break;
+            }
         }
 
         if(shouldSpawnCone)
         {
             shouldSpawnCone = false;
 
-            _singleSubstation.gamePieceType = GamePieceType.Cone;
-            _singleSubstation.requestSpawn = true;
+            _singleSubstation.requests.Add(new SingleSubRequest(GamePieceType.Cone, DeliverType.Toss));
         }
     }
 

@@ -14,7 +14,9 @@ public enum RobotSettings
     RoboChargers,
     Enginerds,
     StrykeForce,
-    WildStang
+    WildStang,
+    FlyingToasters,
+    HighTide
 }
 
 public enum GameState 
