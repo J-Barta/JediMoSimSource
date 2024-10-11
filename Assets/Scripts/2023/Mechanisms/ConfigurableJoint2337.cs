@@ -148,8 +148,8 @@ namespace Mechanisms
 
                     _currentRobotState = RobotState.IntakeDoubleSubstation;
                 }
-                else if ((_intakeGroundAction.triggered && !_previousRobotState.Equals(RobotState.Low)) ||
-                            (_intakeGroundAction.triggered && !_previousRobotState.Equals(RobotState.IntakeDoubleSubstation)))
+                else if ((_intakeGroundAction.IsPressed() && !_previousRobotState.Equals(RobotState.Low)) ||
+                            (_intakeGroundAction.IsPressed() && !_previousRobotState.Equals(RobotState.IntakeDoubleSubstation)))
                 {
                     if (_gamePieceManager.currentGamePieceMode == GamePieceType.Cube)
                     {
