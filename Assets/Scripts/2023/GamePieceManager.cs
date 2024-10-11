@@ -406,6 +406,19 @@ public class GamePieceManager : MonoBehaviour
         StartCoroutine(CanNotEjectWhenRunnning());
     }
 
+    public void deletePiece()
+    {
+        hasGamePiece = false;
+        isPlacing = false;
+        hiddenCone.SetActive(false);
+        hiddenCube.SetActive(false);
+    }
+
+    public GameObject getCube()
+    {
+        return cubePrefab;
+    }
+
     public float getPlaceLatency()
     {
         return placeLatency;
